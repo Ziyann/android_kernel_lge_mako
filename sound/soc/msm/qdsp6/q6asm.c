@@ -213,7 +213,7 @@ static void q6asm_session_free(struct audio_client *ac)
 	return;
 }
 
-int q6asm_audio_client_buf_free(unsigned int dir,
+static int q6asm_audio_client_buf_free(unsigned int dir,
 			struct audio_client *ac)
 {
 	struct audio_port_data *port;
@@ -1225,6 +1225,14 @@ int q6asm_is_dsp_buf_avail(int dir, struct audio_client *ac)
 static void q6asm_add_hdr(struct audio_client *ac, struct apr_hdr *hdr,
 			uint32_t pkt_size, uint32_t cmd_flg)
 {
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return;
+	}
 	pr_debug("%s:session=%d pkt size=%d cmd_flg=%d\n", __func__, pkt_size,
 		cmd_flg, ac->session);
 	mutex_lock(&ac->cmd_lock);
@@ -2966,6 +2974,14 @@ int q6asm_set_lrgain(struct audio_client *ac, int left_gain, int right_gain)
 	int sz = 0;
 	int rc  = 0;
 
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return -EINVAL;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return -EINVAL;
+	}
 	sz = sizeof(struct asm_pp_params_command) +
 		+ sizeof(struct asm_lrchannel_gain_params);
 	vol_cmd = kzalloc(sz, GFP_KERNEL);
@@ -3170,6 +3186,14 @@ int q6asm_set_mute(struct audio_client *ac, int muteflag)
 	int sz = 0;
 	int rc  = 0;
 
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return -EINVAL;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return -EINVAL;
+	}
 	sz = sizeof(struct asm_pp_params_command) +
 		+ sizeof(struct asm_mute_params);
 	vol_cmd = kzalloc(sz, GFP_KERNEL);
@@ -3223,6 +3247,14 @@ int q6asm_set_volume(struct audio_client *ac, int volume)
 	int sz = 0;
 	int rc  = 0;
 
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return -EINVAL;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return -EINVAL;
+	}
 	sz = sizeof(struct asm_pp_params_command) +
 		+ sizeof(struct asm_master_gain_params);
 	vol_cmd = kzalloc(sz, GFP_KERNEL);
@@ -3278,6 +3310,14 @@ int q6asm_set_softpause(struct audio_client *ac,
 	int sz = 0;
 	int rc  = 0;
 
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return -EINVAL;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return -EINVAL;
+	}
 	sz = sizeof(struct asm_pp_params_command) +
 		+ sizeof(struct asm_softpause_params);
 	vol_cmd = kzalloc(sz, GFP_KERNEL);
@@ -3338,6 +3378,14 @@ int q6asm_set_softvolume(struct audio_client *ac,
 	int sz = 0;
 	int rc  = 0;
 
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return -EINVAL;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return -EINVAL;
+	}
 	sz = sizeof(struct asm_pp_params_command) +
 		+ sizeof(struct asm_softvolume_params);
 	vol_cmd = kzalloc(sz, GFP_KERNEL);
@@ -3403,6 +3451,14 @@ int q6asm_equalizer(struct audio_client *ac, void *eq)
 	int sz = 0;
 	int rc  = 0;
 
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return -EINVAL;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return -EINVAL;
+	}
 	sz = sizeof(struct asm_pp_params_command) +
 		+ sizeof(struct asm_equalizer_params);
 	eq_cmd = kzalloc(sz, GFP_KERNEL);
@@ -3479,6 +3535,14 @@ int q6asm_set_high_thd_resampler(struct audio_client *ac, int enable_flag)
 	int sz = 0;
 	int rc  = 0;
 
+	if (ac == NULL) {
+		pr_err("%s: AC handle NULL", __func__);
+		return -EINVAL;
+	}
+	if (ac->apr == NULL) {
+		pr_err("%s: AC APR handle NULL", __func__);
+		return -EINVAL;
+	}
 	sz = sizeof(struct asm_pp_params_command) +
 		+ sizeof(struct asm_high_thd_resamp_params);
 	thd_resamp_cmd = kzalloc(sz, GFP_KERNEL);
