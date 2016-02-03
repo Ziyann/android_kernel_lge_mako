@@ -7030,7 +7030,7 @@ static int nl80211_vendor_cmd(struct sk_buff *skb, struct genl_info *info)
 		if (err != -EINVAL)
 			return err;
 		wdev = NULL;
-	} else if (wdev->wiphy != &rdev->wiphy) {
+	} else if (!wdev || wdev->wiphy != &rdev->wiphy) {
 		return -EINVAL;
 	}
 
@@ -9095,7 +9095,7 @@ void cfg80211_ft_event(struct net_device *netdev,
 	genlmsg_multicast_netns(wiphy_net(&rdev->wiphy), msg, 0,
 				nl80211_mlme_mcgrp.id, GFP_KERNEL);
 	return;
- out:
+out:
 	nlmsg_free(msg);
 }
 EXPORT_SYMBOL(cfg80211_ft_event);
