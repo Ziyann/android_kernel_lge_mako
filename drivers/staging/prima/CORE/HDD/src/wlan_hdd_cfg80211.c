@@ -6811,13 +6811,15 @@ static int wlan_hdd_set_txq_params(struct wiphy *wiphy,
 #endif //LINUX_VERSION_CODE
 
 static int wlan_hdd_cfg80211_del_station(struct wiphy *wiphy,
-                                         struct net_device *dev, u8 *mac)
+                                         struct net_device *dev,
+                                         struct station_del_parameters *params)
 {
     hdd_adapter_t *pAdapter = WLAN_HDD_GET_PRIV_PTR(dev);
     hdd_context_t *pHddCtx;
     VOS_STATUS vos_status;
     int status;
     v_U8_t staId;
+    u8 *mac = (u8 *) params->mac;
 
     ENTER();
     if ( NULL == pAdapter )
